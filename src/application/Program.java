@@ -1,9 +1,11 @@
 package application;
 
+import java.util.InputMismatchException;
 import java.util.Locale;
 import java.util.Scanner;
 
 import model.entities.Account;
+import model.exceptions.DomainException;
 
 public class Program {
 
@@ -33,12 +35,14 @@ public class Program {
 		System.out.print("Enter amount for withdraw: ");
 		double withdrawAmount = sc.nextDouble();
 
-		String error = ac.validateWithdraw(withdrawAmount);
-		if (error != null) {
-			System.out.println(error);
-		} else {
+		try {
 			ac.withdraw(withdrawAmount);
-			System.out.println("Novo saldo" + ac.getBalance());
+			System.out.println("New balance: " + ac.getBalance());
+
+		} catch (DomainException e) {
+			System.out.println(e.getMessage());
+		}catch (InputMismatchException e) {
+			System.out.println("error type");
 		}
 
 		sc.close();
